@@ -8,7 +8,9 @@ function calculadoraIdade(event){
 
     let idade = calcular(dadosUsuario.ano, dadosUsuario.mes, dadosUsuario.dia);
 
-    let classificacaoIdade = classificarIdade();
+    console.log(idade);
+
+    let classificacaoIdade = classificarIdade(idade);
 
     let dadosUsuarioAtualizado = organizarDados(dadosUsuario, idade, classificacaoIdade);
     cadastrarUsuario(dadosUsuarioAtualizado);
@@ -38,15 +40,39 @@ function pegarValores() {
 
 //Passo 2 - Calcular idade
 function calcular(ano, mes, dia) {
+    // verifica a idade em anos
     const dataAtual = new Date();
     const anoAtual = dataAtual.getFullYear();
 
-    let idade = anoAtual - ano
-    
-    console.log(idade);
+    // calcula os dias
+    let diaAtual = dataAtual.getDate();
+    let mesAtual = dataAtual.getMonth();
 
-    return idade;
+    // calcula meses
+
+    let meses
+
+
+    if(mesAtual < mes){
+
+        idade = anoAtual - ano;
+        idade = idade - 1;
+
+        meses = 11 - mes + mesAtual;
+
+
+
+    }else{
+        idade = (anoAtual - ano) ;
+        meses = mes - mesAtual;
+       
+    } 
+
+    return ( meses , idade);
+    
+
 }
+
 
 
 //Passo 3 - Classificar
@@ -56,13 +82,13 @@ function classificarIdade(idade) {
         return "Bebe!!!";
 
     }else if(idade < 18){
-        return "Aborrecente!!"
+        return "Aborrecente!!!"
 
-    }else if (idade < 30) {
-        return "Jovem!!!"
+    }else if (idade < 65) {
+        return "Idade boa!!!"
 
     }else{
-        return "Melhor idade!!!"
+        return "Vivao e vivendo!!"
     }
 }
 
@@ -73,7 +99,7 @@ function organizarDados(dadosUsuario, valoridade, classificaridade){
         ...dadosUsuario,
         idade: valoridade,
         classificacao: classificaridade,
-    }
+            }
 
     console.log(idadeAtualizado);
 
@@ -84,7 +110,7 @@ function organizarDados(dadosUsuario, valoridade, classificaridade){
 function cadastrarUsuario(usuario) {
     // Cria um array vazio
     let listaUsuarios = [];
-
+1
     // Verifica se existe o item "usuariosCadastrados" no localStorage
     //if (localStorage.getItem("usuariosCadastrados") == true) {
     if (localStorage.getItem("usuariosCadastrados")) {
@@ -149,8 +175,10 @@ function montarTabela(listaDeCadastrados) {
         // E adiciona um bloco de codigo igual o a baixo dentro da variavel template para cada elemento do array
         template += `<tr>
         <td data-cell="nome">${pessoa.nome}</td>
-        <td data-cell="altura">${pessoa.dia}</td>
-        <td data-cell="valor do IMC">${pessoa.idade}</td>
+        <td data-cell="data_nascimento">${pessoa.dia}/${pessoa.mes}/${pessoa.ano}</td>
+        <td data-cell="idade">${pessoa.idade} anos</td>
+        <td data-cell="meses">${pessoa.meses} meses</td>
+        <td data-cell="dias">${pessoa.dias} dias</td>
         <td data-cell="classificação do IMC">${pessoa.classificacao}</td>
     </tr>`
     });
